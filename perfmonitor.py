@@ -2,10 +2,10 @@ import psutil
 import time
 
 def display_usage(cpu_usage, mem_usage, net_sent, net_recv, bars=30): 
-    cpu_percent = cpu_usage / 100.0
+    cpu_percent = cpu_usage / 100.0 # shows cpu and memory usage 
     mem_percent = mem_usage / 100.0
 
-    mem_bar = '*' * int(mem_percent * bars) + '-' * (bars - int(mem_percent * bars))
+    mem_bar = '*' * int(mem_percent * bars) + '-' * (bars - int(mem_percent * bars))  #complicated math to make the |***----| thing
     cpu_bar = '*' * int(cpu_percent * bars) + '-' * (bars - int(cpu_percent * bars))
 
     print(
@@ -15,15 +15,14 @@ def display_usage(cpu_usage, mem_usage, net_sent, net_recv, bars=30):
         end="\r"
     )
 
-# Initial counters for calculating speed
-old_net = psutil.net_io_counters()
+old_net = psutil.net_io_counters() # first counters for calculating speed
 
 while True:
     cpu = psutil.cpu_percent()
     mem = psutil.virtual_memory().percent
 
-    new_net = psutil.net_io_counters()
-    sent = (new_net.bytes_sent - old_net.bytes_sent) / 1024  # KB/s
+    new_net = psutil.net_io_counters() # second counters for calculating speed
+    sent = (new_net.bytes_sent - old_net.bytes_sent) / 1024  # KB/s  Takes old bytes and subtracts from new to get total
     recv = (new_net.bytes_recv - old_net.bytes_recv) / 1024  # KB/s
     old_net = new_net
 
